@@ -163,8 +163,8 @@ server <- function(input, output) {
                    color = colors$secondary, linewidth = 1.5) +
       geom_vline(xintercept = mean(data$ratio), linetype = "dashed", color = colors$primary, linewidth = 1.2) +
       theme_minimal() +
-      labs(title = "Distribution of Boys/Girls Ratio",
-           subtitle = "With density curve and mean line",
+      labs(title = "With density curve and mean line",
+           subtitle = "",
            x = "Ratio", y = "Count") +
       theme(
         plot.title = element_text(face = "bold", color = colors$text),
@@ -185,8 +185,8 @@ server <- function(input, output) {
       geom_point(size = 3, alpha = 0.7) +
       theme_minimal() +
       scale_color_manual(values = c("boys" = colors$primary, "girls" = colors$secondary)) +
-      labs(title = "Births Over Time",
-           subtitle = "Number of boys and girls births by year",
+      labs(title = "Number of boys and girls births by year",
+           subtitle = "",
            x = "Year", y = "Number of Births",
            color = "Gender") +
       theme(
