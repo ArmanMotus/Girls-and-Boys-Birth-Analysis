@@ -23,6 +23,8 @@ jobs:
           Rscript -e 'install.packages(c("remotes", "rcmdcheck", "shiny", "bslib", "ggplot2", "DT", "rsconnect"))'
           Rscript -e 'if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")'
           Rscript -e 'renv::restore()'
+      - name: Install rsconnect
+          run: Rscript -e 'install.packages("rsconnect")'
 
 
 
