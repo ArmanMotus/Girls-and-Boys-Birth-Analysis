@@ -18,10 +18,12 @@ jobs:
         with:
           r-version: '4.3.0'  # Specify your R version
 
-      - name: Install R package dependencies
+     - name: Install R package dependencies
         run: |
+          Rscript -e 'install.packages(c("remotes", "rcmdcheck", "shiny", "bslib", "ggplot2", "DT", "rsconnect"))'
           Rscript -e 'if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")'
           Rscript -e 'renv::restore()'
+
 
 
       - name: Deploy to shinyapps.io
