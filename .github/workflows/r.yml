@@ -23,7 +23,7 @@ jobs:
 
       - name: Install R dependencies
         run: |
-          install.packages(c("shiny","bslib","rsconnect","ggplot2","DT","bsicons", "reshape2", "htmltools"
+          install.packages(c("Matrix","shiny","bslib","rsconnect","ggplot2","DT","bsicons","reshape2", "htmltools"
             ), dependencies = TRUE, repos = 'http://cran.rstudio.com/')
         shell: Rscript {0}
 
