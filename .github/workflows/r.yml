@@ -20,9 +20,9 @@ jobs:
 
       - name: Install R package dependencies
         run: |
-          Rscript -e ' install.packages(c("remotes", "rcmdcheck", "shiny", "bslib", "ggplot2", "DT"))'
           Rscript -e 'if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")'
           Rscript -e 'renv::restore()'
+
 
       - name: Deploy to shinyapps.io
         env:
