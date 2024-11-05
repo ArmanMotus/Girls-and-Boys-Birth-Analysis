@@ -1,30 +1,51 @@
-on:
-  push:
-     branches:
-       - main
+name: deploy-shiny
 
-name: Deploy template app to shinyapps.io
+on: [push]
 
 jobs:
   deploy-shiny:
-    name: Deploy to shinyapps.io
     runs-on: ubuntu-latest
     env:
-      GITHUB_PAT: ${{ secrets.ACCESS_TOKEN }}
-      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        
+      GITHUB_PAT: ${{ secrets.DEPLOY_SECRET }}
     steps:
-       - name: 🛎️ Checkout repository
-         uses: actions/checkout@v2
-         with:
-           fetch-depth: 0
-       - id: deploy
-         name: 💎 Deploy to shinyapps.io
-         uses: qwert666/shinyapps-actions@main
-         env:
-           SHINY_USERNAME: 'amclouds'
-           SHINY_TOKEN: ${{ secrets.TOKEN }}
-           SHINY_SECRET: ${{ secrets.SECRET }}
-           APP_NAME: 'Girls-and-Boys-Birth-Analysis'
-           APP_DIR: ''
-          
+      - uses: actions/checkout@v2
+      
+      - name: Setup R version
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.2.3'
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev
+          sudo apt-get install -y libmongoc-dev libbson-dev
+
+      - name: Install R dependencies
+        run: |
+          install.packages(c(
+            "shiny",
+            "rsconnect",
+            "bslib",
+            "ggplot2",
+            "DT",
+            "bsicons",
+            "reshape2",
+            "htmltools"
+          ), dependencies = TRUE, repos = 'http://cran.rstudio.com/')
+        shell: Rscript {0}
+
+      - name: Deploy to shinyapps.io
+        run: |
+          rsconnect::setAccountInfo(
+            name='amclouds',
+            token='${{ secrets.SHINYAPPS_TOKEN }}',
+            secret='${{ secrets.SHINYAPPS_SECRET }}'
+          )
+          rsconnect::deployApp(
+            appName = 'Girls-and-Boys-Birth-Analysis',
+            account = 'amclouds',
+            server = 'shinyapps.io',
+            forceUpdate = TRUE
+          )
+        shell: Rscript {0}
